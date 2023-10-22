@@ -1,0 +1,96 @@
+package com.training.mypubmongo.service;
+
+import com.training.mypubmongo.configuration.RestTemplateConfig;
+import com.training.mypubmongo.feignclients.CustomerFeign;
+import com.training.mypubmongo.dto.OrderDTO;
+import com.training.mypubmongo.entity.Order;
+import com.training.mypubmongo.feignclients.CustomerFeignClient;
+import com.training.mypubmongo.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class OrderService {
+
+    @Autowired
+    private final OrderRepository orderRepository;
+
+    @Autowired
+    private final RestTemplateConfig restTemplateConfig;
+
+    @Autowired
+    private final CustomerFeignClient customerFeignClient;
+
+    public OrderService(OrderRepository orderRepository, RestTemplateConfig restTemplateConfig, CustomerFeignClient customerFeignClient) {
+        this.orderRepository = orderRepository;
+        this.restTemplateConfig = restTemplateConfig;
+        this.customerFeignClient = customerFeignClient;
+    }
+
+
+    public OrderDTO saveCustomer(OrderDTO orderDTO){
+        Order order = new Order();
+        CustomerFeign customerFeign = new CustomerFeign();
+        order.setId(orderDTO.getId());
+        order.setName(orderDTO.getName());
+        order.setTelephone(orderDTO.getTelephone());
+
+        //order.setCustomerDTO(customerRepository.findById(orderDTO.getCustomerDTO().getId()).orElseThrow());
+        order.setCustomerFeign(
+                customerFeignClient.getOneCustomer(orderDTO.getIdCustomer())
+        );
+
+        order.setDrinks(orderDTO.getDrinks());
+        order.setTable(orderDTO.getTable());
+        order.setDiscount(orderDTO.getDiscount());
+        order.setTotal(calculateTotalWithDiscount(
+                calculateTotalBill(orderDTO.getDrinks()),
+                orderDTO.getDiscount()
+        ));
+        order.setTotalWithTip(calculateTotalWithTip(order.getTotal()));
+        order.setTotalWithTaxes(calculateTotalWithTaxes(order.getTotalWithTip()));
+        orderRepository.save(order);
+
+
+
+
+        return orderDTO;
+    }
+
+
+
+    public Double calculateTotalBill(Map<String,Double> drinks){
+        Collection<Double> valueDrinks = drinks.values();
+        Optional<Double> totalOptional = valueDrinks.stream().reduce(Double::sum);
+        return totalOptional.get();
+    }
+
+    public Double calculateTotalWithDiscount(Double total,Double discount){
+        return total - discount;
+    }
+
+    public Double calculateTotalWithTip(Double total){
+        return total + (total * 0.10);
+    }
+
+    public Double calculateTotalWithTaxes(Double total){
+        return total + (total * 0.19);
+    }
+
+    public Order getAllOrderCustomer(Long id){
+        Order order = new Order();
+
+        order.setCustomerFeign(customerFeignClient.getOneCustomer(order.getId()));
+
+        return orderRepository.findById(id).orElseThrow();
+
+    }
+
+
+
+
+}

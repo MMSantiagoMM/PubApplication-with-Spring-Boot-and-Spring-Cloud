@@ -1,0 +1,8 @@
+spring:
+
+  data:
+    mongodb:
+      database: my-pubdb
+      host: localhost
+      port: 27017
+
