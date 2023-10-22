@@ -1,18 +1,12 @@
 package com.training.mypubmongo.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Map;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class OrderDTO {
 
     private Long id;

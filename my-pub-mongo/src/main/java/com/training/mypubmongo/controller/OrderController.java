@@ -24,13 +24,10 @@ public class OrderController {
     @Autowired
     private final OrderService orderService;
 
-    @Autowired
-    private final CustomerFeignClient customerFeignClient;
 
-    public OrderController(OrderRepository orderRepository, OrderService orderService, CustomerFeignClient customerFeignClient) {
+    public OrderController(OrderRepository orderRepository, OrderService orderService) {
         this.orderRepository = orderRepository;
         this.orderService = orderService;
-        this.customerFeignClient = customerFeignClient;
     }
 
     @GetMapping("/all_orders")

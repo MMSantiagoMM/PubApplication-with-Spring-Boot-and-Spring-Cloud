@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.training</groupId>
-	<artifactId>my-pub-mongo</artifactId>
+	<artifactId>order-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>my-pub-mongo</name>
 	<description>Demo project for Spring Boot</description>

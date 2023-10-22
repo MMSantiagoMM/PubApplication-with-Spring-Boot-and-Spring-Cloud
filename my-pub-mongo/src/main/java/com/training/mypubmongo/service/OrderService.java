@@ -1,6 +1,5 @@
 package com.training.mypubmongo.service;
 
-import com.training.mypubmongo.configuration.RestTemplateConfig;
 import com.training.mypubmongo.dto.OrderDTO;
 import com.training.mypubmongo.entity.Order;
 import com.training.mypubmongo.feignclients.CustomerFeignClient;
@@ -18,15 +17,12 @@ public class OrderService {
     @Autowired
     private final OrderRepository orderRepository;
 
-    @Autowired
-    private final RestTemplateConfig restTemplateConfig;
 
     @Autowired
     private final CustomerFeignClient customerFeignClient;
 
-    public OrderService(OrderRepository orderRepository, RestTemplateConfig restTemplateConfig, CustomerFeignClient customerFeignClient) {
+    public OrderService(OrderRepository orderRepository, CustomerFeignClient customerFeignClient) {
         this.orderRepository = orderRepository;
-        this.restTemplateConfig = restTemplateConfig;
         this.customerFeignClient = customerFeignClient;
     }
 

@@ -14,7 +14,11 @@ public class CustomerService {
 
 
     @Autowired
-    private CustomerRepository repository;
+    private final CustomerRepository repository;
+
+    public CustomerService(CustomerRepository repository) {
+        this.repository = repository;
+    }
 
     public CustomerDTO create(CustomerDTO customerDTO){
         Customer customer = new Customer();

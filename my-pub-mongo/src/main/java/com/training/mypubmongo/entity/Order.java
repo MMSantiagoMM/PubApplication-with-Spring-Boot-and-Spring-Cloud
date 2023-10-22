@@ -9,11 +9,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.Map;
 
 @Data
-@Document(collection = "Customers")
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
-@Getter
+@Document(collection = "Order")
 public class Order {
 
     @MongoId
