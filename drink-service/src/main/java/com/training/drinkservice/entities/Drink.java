@@ -1,10 +1,7 @@
 package com.training.drinkservice.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,9 +10,10 @@ import lombok.Data;
 public class Drink {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String drink;
+    private String type;
+    private String name;
     private Double price;
     private String size;
     private String region;

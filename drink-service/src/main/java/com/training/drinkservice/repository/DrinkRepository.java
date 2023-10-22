@@ -1,4 +1,9 @@
 package com.training.drinkservice.repository;
 
-public interface DrinkRepository {
+import com.training.drinkservice.entities.Drink;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface DrinkRepository extends JpaRepository<Drink,Long> {
 }
