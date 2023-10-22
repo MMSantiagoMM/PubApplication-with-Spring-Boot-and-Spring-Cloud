@@ -18,8 +18,6 @@ public class Order {
 
     @MongoId
     private Long id;
-    private String name;
-    private String telephone;
     private CustomerFeign customerFeign;
     private Integer table;
     private Map<String,Double> drinks;

@@ -9,5 +9,4 @@ public class CustomerFeign {
     private String document;
     private String name;
     private String telephone;
-    private Long idcustomer;
 }

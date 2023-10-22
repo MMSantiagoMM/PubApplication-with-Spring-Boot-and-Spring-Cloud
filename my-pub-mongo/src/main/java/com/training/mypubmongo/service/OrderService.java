@@ -34,12 +34,8 @@ public class OrderService {
 
     public OrderDTO saveCustomer(OrderDTO orderDTO){
         Order order = new Order();
-        CustomerFeign customerFeign = new CustomerFeign();
         order.setId(orderDTO.getId());
-        order.setName(orderDTO.getName());
-        order.setTelephone(orderDTO.getTelephone());
 
-        //order.setCustomerDTO(customerRepository.findById(orderDTO.getCustomerDTO().getId()).orElseThrow());
         order.setCustomerFeign(
                 customerFeignClient.getOneCustomer(orderDTO.getIdCustomer())
         );
@@ -54,10 +50,6 @@ public class OrderService {
         order.setTotalWithTip(calculateTotalWithTip(order.getTotal()));
         order.setTotalWithTaxes(calculateTotalWithTaxes(order.getTotalWithTip()));
         orderRepository.save(order);
-
-
-
-
         return orderDTO;
     }
 
