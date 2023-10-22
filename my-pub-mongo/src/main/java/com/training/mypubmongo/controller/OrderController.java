@@ -70,17 +70,6 @@ public class OrderController {
         }
         return false;
     }
-
-    @GetMapping("/test")
-    public List<CustomerFeign> obtenertodos(){
-        return customerFeignClient.getCustomers();
-    }
-
-    @GetMapping("/test2/{id}")
-    public Order obtenerModificado(@PathVariable Long id){
-        return orderService.getAllOrderCustomer(id);
-    }
-
 }
 
 

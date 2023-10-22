@@ -72,17 +72,4 @@ public class OrderService {
     public Double calculateTotalWithTaxes(Double total){
         return total + (total * 0.19);
     }
-
-    public Order getAllOrderCustomer(Long id){
-        Order order = new Order();
-
-        order.setCustomerFeign(customerFeignClient.getOneCustomer(order.getId()));
-
-        return orderRepository.findById(id).orElseThrow();
-
-    }
-
-
-
-
 }
