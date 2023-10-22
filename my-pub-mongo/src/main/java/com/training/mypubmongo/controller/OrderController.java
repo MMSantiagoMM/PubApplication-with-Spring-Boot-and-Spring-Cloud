@@ -1,7 +1,6 @@
 package com.training.mypubmongo.controller;
 
 
-import com.training.mypubmongo.feignclients.CustomerFeign;
 import com.training.mypubmongo.dto.OrderDTO;
 import com.training.mypubmongo.entity.Order;
 import com.training.mypubmongo.feignclients.CustomerFeignClient;
@@ -34,34 +33,34 @@ public class OrderController {
         this.customerFeignClient = customerFeignClient;
     }
 
-    @GetMapping("/allcustomers")
+    @GetMapping("/all_orders")
     @ResponseStatus(HttpStatus.ACCEPTED)
     List<Order> getall(){
         return orderRepository.findAll();
     }
 
-    @GetMapping("/onecustomer/{id}")
+    @GetMapping("/one_order/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public Order getOneCustomer(@PathVariable Long id){
         return orderRepository.findById(id)
                 .orElseThrow(()->new OrderNotFoundException(id));
     }
 
-    @PostMapping("/insertcustomer")
+    @PostMapping("/insert_order")
     @ResponseStatus(HttpStatus.CREATED)
     String insert(@RequestBody OrderDTO orderDTO){
-        orderService.saveCustomer(orderDTO);
+        orderService.saveOrder(orderDTO);
         return "A customer was created";
     }
 
-    @PutMapping("/updateCustomer/{id}")
+    @PutMapping("/update_order/{id}")
     @ResponseStatus(HttpStatus.OK)
     String updateCustomer(@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-        orderService.saveCustomer(orderDTO);
+        orderService.saveOrder(orderDTO);
         return "A customer was updated";
     }
 
-    @DeleteMapping("/removeCustomer/{id}")
+    @DeleteMapping("/remove_order/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Boolean deleteCustomer(@PathVariable Long id){
         if(!orderRepository.findById(id).equals(Optional.empty())){

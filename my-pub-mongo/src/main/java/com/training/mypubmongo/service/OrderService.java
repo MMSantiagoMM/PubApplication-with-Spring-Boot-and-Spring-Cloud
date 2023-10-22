@@ -1,7 +1,6 @@
 package com.training.mypubmongo.service;
 
 import com.training.mypubmongo.configuration.RestTemplateConfig;
-import com.training.mypubmongo.feignclients.CustomerFeign;
 import com.training.mypubmongo.dto.OrderDTO;
 import com.training.mypubmongo.entity.Order;
 import com.training.mypubmongo.feignclients.CustomerFeignClient;
@@ -32,7 +31,7 @@ public class OrderService {
     }
 
 
-    public OrderDTO saveCustomer(OrderDTO orderDTO){
+    public OrderDTO saveOrder(OrderDTO orderDTO){
         Order order = new Order();
         order.setId(orderDTO.getId());
 
