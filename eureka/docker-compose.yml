@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  eureka-server:
+    image: eureka-server-image
+    container_name: "eureka-server-container"
+    ports:
+      - "8888:8888"
+    environment:
+      eureka.instance.hostname: localhost
+
+
+
