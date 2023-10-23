@@ -1,8 +1,7 @@
 spring:
-
   data:
     mongodb:
-      database: my-pubdb
-      host: localhost
+      database: Customer
+      host: pubmongo
       port: 27017
 
