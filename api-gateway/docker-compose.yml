@@ -1,0 +1,7 @@
+version: "5"
+services:
+  api-gateway-app:
+    image: api-gateway-image
+    container_name: "pub-api-gateway-container"
+    ports:
+      - 8080:8080
