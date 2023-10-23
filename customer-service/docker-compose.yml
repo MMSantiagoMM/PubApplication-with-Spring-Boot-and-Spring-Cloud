@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  customer-app:
+    container_name: customer-service-container
+    image: customer-service-image
+    build: .
+    ports:
+      - "8002:8002"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/postgres
+      - DATABASE_USERNAME=mapura
+      - DATABASE_PASSWORD=s3cr3t
+    depends_on:
+      - postgres_db
+
+
+  postgres_db:
+    container_name: pub-postgres-container
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: mapura
+      POSTGRES_PASSWORD: "s3cr3t"
+      POSTGRES_DB: postgres
+      POSTGRES_HOST_AUTH_METHOD: "trust"
