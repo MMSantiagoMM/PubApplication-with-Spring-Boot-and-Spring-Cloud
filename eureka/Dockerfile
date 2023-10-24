@@ -1,3 +1,4 @@
 FROM openjdk:17
-ADD target/eureka-server.jar eureka-server.jar
-ENTRYPOINT ["java", "-jar","eureka-server.jar"]
+COPY target/eureka.jar eureka.jar
+EXPOSE 8761
+ENTRYPOINT ["java", "-jar","eureka.jar"]

@@ -1,12 +1,69 @@
-version: "3.8"
 services:
-  eureka-server:
-    image: eureka-server-image
-    container_name: "eureka-server-container"
-    ports:
-      - "8888:8888"
-    environment:
-      eureka.instance.hostname: localhost
+    eureka-server:
+      build: .
+      image: eureka-server-image
+      ports:
+        - "8761:8761"
+      networks:
+        - pubnetwork
+
+    api-gateway-app:
+      image: api-gateway-image
+      environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka"
+      ports:
+        - "8080:8080"
+      networks:
+        - pubnetwork
+
+    customer-app:
+      image: customer-service-image
+      environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka"
+
+      ports:
+        - "8002:8002"
+      networks:
+        - pubnetwork
+      depends_on:
+        - postgres_db
+
+    postgres_db:
+      image: postgres:12
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_USER: mapura
+        POSTGRES_PASSWORD: "s3cr3t"
+        POSTGRES_DB: postgres
+        POSTGRES_HOST_AUTH_METHOD: "trust"
+      depends_on:
+        - eureka-server
+
+    order-service:
+      image: order-service-image
+      environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka"
+      ports:
+        - "8004:8004"
+      networks:
+        - pubnetwork
+      depends_on:
+        - mongo_db
+
+    mongo_db:
+      image: mongo:latest
+      ports:
+        - "27017:27017"
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: mapura
+        MONGO_INITDB_ROOT_PASSWORD: s3cr3t
+        MONGO_INITDB_DATABASE: mongodb
+      depends_on:
+        - eureka-server
+
+networks:
+  pubnetwork:
 
 
 

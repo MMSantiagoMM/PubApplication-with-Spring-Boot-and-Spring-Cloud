@@ -1,4 +1,3 @@
-version: "5"
 services:
   api-gateway-app:
     image: api-gateway-image

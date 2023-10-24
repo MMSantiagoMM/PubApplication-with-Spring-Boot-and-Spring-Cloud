@@ -1,16 +1,27 @@
-version: "5"
 services:
-  pubmongo:
-    image: mongo:latest
-    container_name: "pub-mongo-container"
-    ports:
-      - 27017:27017
+  #pubmongo:
+    #image: mongo:latest
+    #container_name: pub-mongo-container
+    #ports:
+      #- 27017:27017
 
-  order-microservice-image :
-    image: order-microservice-image:latest
-    container_name: "order-microservice-container"
+  order-service :
+    build: ./my-pub-mongo
+    networks:
+      - infrastructure
     ports:
-      - 8004:8004
+      - "8004:8004"
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka/
 
-    links:
-      - pubmongo
+
+    #ports:
+      #- 8004:8004
+    #environment:
+      #eureka.client.service-url.defaultZone: http://eureka:8761/eureka
+
+    #links:
+      #- pubmongo
+
+networks:
+  infrastructure:

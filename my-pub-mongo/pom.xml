@@ -79,7 +79,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>order-docker-compose</finalName>
+		<finalName>my-pub-mongo</finalName>
 	</build>
 
 </project>

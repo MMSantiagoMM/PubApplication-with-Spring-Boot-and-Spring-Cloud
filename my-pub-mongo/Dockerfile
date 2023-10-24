@@ -1,3 +1,3 @@
 FROM openjdk:17
-ADD target/order-docker-compose.jar order-docker-compose.jar
-ENTRYPOINT ["java", "-jar", "order-docker-compose.jar"]
+ADD target/my-pub-mongo.jar my-pub-mongo.jar
+ENTRYPOINT ["java", "-jar", "my-pub-mongo.jar"]
