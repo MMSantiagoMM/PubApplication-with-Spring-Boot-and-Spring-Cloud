@@ -19,8 +19,10 @@ services:
     customer-app:
       image: customer-service-image
       environment:
-        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka"
-
+          - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+          - DATABASE_URL=jdbc:postgresql://postgres_db:5432/postgres
+          - DATABASE_USERNAME=postgres
+          - DATABASE_PASSWORD=postgres
       ports:
         - "8002:8002"
       networks:
@@ -29,16 +31,16 @@ services:
         - postgres_db
 
     postgres_db:
-      image: postgres:12
+      image: postgres:latest
       ports:
         - "5432:5432"
       environment:
-        POSTGRES_USER: mapura
-        POSTGRES_PASSWORD: "s3cr3t"
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
         POSTGRES_DB: postgres
-        POSTGRES_HOST_AUTH_METHOD: "trust"
-      depends_on:
-        - eureka-server
+      networks:
+        - pubnetwork
+
 
     order-service:
       image: order-service-image
@@ -59,8 +61,8 @@ services:
         MONGO_INITDB_ROOT_USERNAME: mapura
         MONGO_INITDB_ROOT_PASSWORD: s3cr3t
         MONGO_INITDB_DATABASE: mongodb
-      depends_on:
-        - eureka-server
+      networks:
+        - pubnetwork
 
 networks:
   pubnetwork:
