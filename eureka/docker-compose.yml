@@ -16,6 +16,7 @@ services:
       networks:
         - pubnetwork
 
+
     customer-app:
       image: customer-service-image
       environment:
@@ -24,9 +25,10 @@ services:
           - DATABASE_USERNAME=postgres
           - DATABASE_PASSWORD=postgres
       ports:
-        - "8002:8002"
+        - "8002-8003:8002"
       networks:
         - pubnetwork
+      scale: 2
       depends_on:
         - postgres_db
 
@@ -47,9 +49,10 @@ services:
       environment:
         - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       ports:
-        - "8004:8004"
+        - "8004-8074:8004"
       networks:
         - pubnetwork
+      scale: 2
       depends_on:
         - mongo_db
 
