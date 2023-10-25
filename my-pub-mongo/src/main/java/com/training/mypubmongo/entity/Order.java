@@ -21,4 +21,5 @@ public class Order {
     private Double total;
     private Double totalWithTip;
     private Double totalWithTaxes;
+
 }

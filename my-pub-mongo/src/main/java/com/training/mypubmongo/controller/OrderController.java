@@ -46,8 +46,8 @@ public class OrderController {
     @PostMapping("/insert_order")
     @ResponseStatus(HttpStatus.CREATED)
     String insert(@RequestBody OrderDTO orderDTO){
-        orderService.saveOrder(orderDTO);
-        return "A customer was created";
+
+        return orderService.saveOrder(orderDTO);
     }
 
     @PutMapping("/update_order/{id}")

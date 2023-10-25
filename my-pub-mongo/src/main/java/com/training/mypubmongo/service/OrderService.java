@@ -27,14 +27,13 @@ public class OrderService {
     }
 
 
-    public OrderDTO saveOrder(OrderDTO orderDTO){
+    public String saveOrder(OrderDTO orderDTO){
         Order order = new Order();
         order.setId(orderDTO.getId());
 
         order.setCustomerFeign(
                 customerFeignClient.getOneCustomer(orderDTO.getIdCustomer())
         );
-
         order.setDrinks(orderDTO.getDrinks());
         order.setTable(orderDTO.getTable());
         order.setDiscount(orderDTO.getDiscount());
@@ -45,7 +44,7 @@ public class OrderService {
         order.setTotalWithTip(calculateTotalWithTip(order.getTotal()));
         order.setTotalWithTaxes(calculateTotalWithTaxes(order.getTotalWithTip()));
         orderRepository.save(order);
-        return orderDTO;
+        return "The order was saved successfully";
     }
 
 

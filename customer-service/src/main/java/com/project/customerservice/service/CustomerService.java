@@ -2,6 +2,7 @@ package com.project.customerservice.service;
 
 
 import com.project.customerservice.dto.CustomerDTO;
+import com.project.customerservice.dto.CustomerMapper;
 import com.project.customerservice.entities.Customer;
 import com.project.customerservice.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,9 @@ public class CustomerService {
         this.repository = repository;
     }
 
-    public CustomerDTO create(CustomerDTO customerDTO){
-        Customer customer = new Customer();
-
-        customer.setName(customerDTO.getName());
-        customer.setDocument(customerDTO.getDocument());
-        customer.setTelephone(customerDTO.getTelephone());
-
-        repository.save(customer);
-        return customerDTO;
+    public String create(CustomerDTO customerDTO){
+        repository.save(CustomerMapper.INSTANCE.ToCustomer(customerDTO));
+        return "Customer was created successfully";
     }
 
     public List<Customer> getAll(){

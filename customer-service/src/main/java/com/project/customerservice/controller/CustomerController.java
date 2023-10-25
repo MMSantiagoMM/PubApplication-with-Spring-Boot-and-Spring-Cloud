@@ -35,7 +35,7 @@ public class CustomerController {
 
     @PostMapping("/insert")
     @ResponseStatus(HttpStatus.CREATED)
-    CustomerDTO create(@RequestBody CustomerDTO customerDTO){
+    String create(@RequestBody CustomerDTO customerDTO){
         return service.create(customerDTO);
     }
 
