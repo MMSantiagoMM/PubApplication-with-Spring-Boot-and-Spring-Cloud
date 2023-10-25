@@ -1,9 +1,9 @@
-spring:
-  data:
-    mongodb:
-      database: Customer
-      host: pubmongo
-      port: 27017
+#spring:
+  #data:
+    #mongodb:
+      #database: orderdb
+      #host: mongodb
+      #port: 27017
 
 
 

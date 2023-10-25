@@ -45,7 +45,7 @@ services:
     order-service:
       image: order-service-image
       environment:
-        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka"
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
       ports:
         - "8004:8004"
       networks:
@@ -58,9 +58,7 @@ services:
       ports:
         - "27017:27017"
       environment:
-        MONGO_INITDB_ROOT_USERNAME: mapura
-        MONGO_INITDB_ROOT_PASSWORD: s3cr3t
-        MONGO_INITDB_DATABASE: mongodb
+        MONGO_INITDB_DATABASE: mongo_db
       networks:
         - pubnetwork
 
