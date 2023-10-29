@@ -28,7 +28,8 @@ services:
         - "8002:8002"
       networks:
         - pubnetwork
-      #scale: 2
+      #deploy:
+        #replicas: 2
       depends_on:
         - postgres_db
 
@@ -52,7 +53,8 @@ services:
         - "8004:8004"
       networks:
         - pubnetwork
-      #scale: 2
+      #deploy:
+        #replicas: 2
       depends_on:
         - mongo_db
 
