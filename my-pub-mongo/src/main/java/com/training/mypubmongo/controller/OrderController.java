@@ -1,16 +1,19 @@
 package com.training.mypubmongo.controller;
 
 
+import com.mongodb.internal.bulk.UpdateRequest;
 import com.training.mypubmongo.dto.OrderDTO;
 import com.training.mypubmongo.entity.Order;
-import com.training.mypubmongo.feignclients.CustomerFeignClient;
-import com.training.mypubmongo.repository.OrderNotFoundException;
+import com.training.mypubmongo.exceptions.OrderNotFoundException;
 import com.training.mypubmongo.repository.OrderRepository;
 import com.training.mypubmongo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,28 +22,23 @@ import java.util.Optional;
 public class OrderController {
 
     @Autowired
-    private final OrderRepository orderRepository;
-
-    @Autowired
     private final OrderService orderService;
 
 
-    public OrderController(OrderRepository orderRepository, OrderService orderService) {
-        this.orderRepository = orderRepository;
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @GetMapping("/all_orders")
     @ResponseStatus(HttpStatus.ACCEPTED)
     List<Order> getall(){
-        return orderRepository.findAll();
+        return orderService.getAll();
     }
 
     @GetMapping("/one_order/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public Order getOneCustomer(@PathVariable Long id){
-        return orderRepository.findById(id)
-                .orElseThrow(()->new OrderNotFoundException(id));
+        return orderService.getById(id);
     }
 
     @PostMapping("/insert_order")
@@ -52,19 +50,14 @@ public class OrderController {
 
     @PutMapping("/update_order/{id}")
     @ResponseStatus(HttpStatus.OK)
-    String updateCustomer(@PathVariable Long id, @RequestBody OrderDTO orderDTO){
-        orderService.saveOrder(orderDTO);
-        return "A customer was updated";
+    ResponseEntity<Order> updateCustomer(@PathVariable Long id, @RequestBody OrderDTO newOrder){
+        return orderService.updateOrder(newOrder,id);
     }
 
     @DeleteMapping("/remove_order/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Boolean deleteCustomer(@PathVariable Long id){
-        if(!orderRepository.findById(id).equals(Optional.empty())){
-            orderRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public String deleteCustomer(@PathVariable Long id){
+        return orderService.deleteOrder(id);
     }
 }
 

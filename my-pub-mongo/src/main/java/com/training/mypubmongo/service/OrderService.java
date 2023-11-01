@@ -2,12 +2,15 @@ package com.training.mypubmongo.service;
 
 import com.training.mypubmongo.dto.OrderDTO;
 import com.training.mypubmongo.entity.Order;
+import com.training.mypubmongo.exceptions.OrderNotFoundException;
 import com.training.mypubmongo.feignclients.CustomerFeignClient;
 import com.training.mypubmongo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,6 +27,14 @@ public class OrderService {
     public OrderService(OrderRepository orderRepository, CustomerFeignClient customerFeignClient) {
         this.orderRepository = orderRepository;
         this.customerFeignClient = customerFeignClient;
+    }
+
+    public List<Order> getAll(){
+        return orderRepository.findAll();
+    }
+
+    public Order getById(Long id){
+        return orderRepository.findById(id).orElseThrow(()->new OrderNotFoundException(id));
     }
 
 
@@ -66,4 +77,37 @@ public class OrderService {
     public Double calculateTotalWithTaxes(Double total){
         return total + (total * 0.19);
     }
+
+
+    public ResponseEntity<Order> updateOrder (OrderDTO newOrder, Long id){
+        orderRepository.findById(id)
+                .map(order -> {
+                    order.setId(newOrder.getId());
+                    order.setCustomerFeign(customerFeignClient.getOneCustomer(newOrder.getIdCustomer()));
+                    order.setDrinks(newOrder.getDrinks());
+                    order.setTable(newOrder.getTable());
+                    order.setDiscount(newOrder.getDiscount());
+                    order.setTotal(calculateTotalWithDiscount(
+                            calculateTotalBill(newOrder.getDrinks()),
+                            newOrder.getDiscount()
+                    ));
+                    order.setTotalWithTip(calculateTotalWithTip(order.getTotal()));
+                    order.setTotalWithTaxes(calculateTotalWithTaxes(order.getTotalWithTip()));
+                    return orderRepository.save(order);
+                }).orElseThrow(()-> new OrderNotFoundException(id));
+        return null;
+
+    }
+
+    public String deleteOrder(Long id){
+        if(orderRepository.findById(id).isEmpty()){
+            return "The order doesn't exist";
+        }else{
+            orderRepository.deleteById(id);
+            return "The order was deleted successfully";
+        }
+    }
+
 }
+
+
