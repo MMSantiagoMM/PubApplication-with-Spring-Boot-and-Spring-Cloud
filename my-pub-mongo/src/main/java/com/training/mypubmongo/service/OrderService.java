@@ -8,7 +8,9 @@ import com.training.mypubmongo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +110,18 @@ public class OrderService {
         }
     }
 
+    public Order updateOrderByField(Long id, Map<String,Object>fields){
+        Optional<Order> existingCustomer = orderRepository.findById(id);
+        if(existingCustomer.isPresent()){
+            fields.forEach((key,value)->{
+                Field field = ReflectionUtils.findField(Order.class,key);
+                field.setAccessible(true);
+                ReflectionUtils.setField(field,existingCustomer.get(),value);
+            });
+            return orderRepository.save(existingCustomer.get());
+        }
+        return null;
+    }
 }
 
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +53,12 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     ResponseEntity<Order> updateCustomer(@PathVariable Long id, @RequestBody OrderDTO newOrder){
         return orderService.updateOrder(newOrder,id);
+    }
+
+    @PatchMapping("/update_field/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    Order updateByField(@PathVariable Long id, @RequestBody Map<String,Object> fields){
+        return orderService.updateOrderByField(id,fields);
     }
 
     @DeleteMapping("/remove_order/{id}")
