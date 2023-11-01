@@ -4,8 +4,11 @@ package com.project.customerservice.service;
 import com.project.customerservice.dto.CustomerDTO;
 import com.project.customerservice.dto.CustomerMapper;
 import com.project.customerservice.entities.Customer;
+import com.project.customerservice.exceptions.CustomerNotFoundException;
 import com.project.customerservice.repository.CustomerRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,11 +38,23 @@ public class CustomerService {
     }
 
     public String remove (Long id){
-        repository.deleteById(id);
-        return "Customer deleted successful";
+        if(repository.findById(id).isEmpty()){
+            throw new CustomerNotFoundException(id);
+        }else{
+            repository.deleteById(id);
+        }
+        return "The customer was deleted successfully";
     }
 
+    public ResponseEntity<Customer> update(Long id, CustomerDTO newCustomer){
+            repository.findById(id).map(customer -> {
+            customer.setName(newCustomer.getName());
+            customer.setDocument(newCustomer.getDocument());
+            customer.setTelephone(newCustomer.getTelephone());
+            return repository.save(customer);
 
-
+        }).orElseThrow(()->new CustomerNotFoundException(id));
+            return null;
+    }
 
 }

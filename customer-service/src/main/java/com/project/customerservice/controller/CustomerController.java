@@ -6,6 +6,8 @@ import com.project.customerservice.entities.Customer;
 import com.project.customerservice.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +39,11 @@ public class CustomerController {
     @ResponseStatus(HttpStatus.CREATED)
     String create(@RequestBody CustomerDTO customerDTO){
         return service.create(customerDTO);
+    }
+
+    @PutMapping("/update/{id}")
+    ResponseEntity<Customer>update(@PathVariable Long id, @RequestBody CustomerDTO customerDTO){
+        return service.update(id,customerDTO);
     }
 
     @DeleteMapping("/delete/{id}")
