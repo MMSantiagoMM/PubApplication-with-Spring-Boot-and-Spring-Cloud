@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/customer")
@@ -44,6 +45,11 @@ public class CustomerController {
     @PutMapping("/update/{id}")
     ResponseEntity<Customer>update(@PathVariable Long id, @RequestBody CustomerDTO customerDTO){
         return service.update(id,customerDTO);
+    }
+
+    @PatchMapping("/update_field/{id}")
+    Customer updateField(@PathVariable Long id, @RequestBody Map<String,Object>fields){
+        return service.updateCustomerByFields(id,fields);
     }
 
     @DeleteMapping("/delete/{id}")

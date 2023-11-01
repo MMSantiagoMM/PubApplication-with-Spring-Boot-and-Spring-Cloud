@@ -6,12 +6,15 @@ import com.project.customerservice.dto.CustomerMapper;
 import com.project.customerservice.entities.Customer;
 import com.project.customerservice.exceptions.CustomerNotFoundException;
 import com.project.customerservice.repository.CustomerRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -57,4 +60,17 @@ public class CustomerService {
             return null;
     }
 
+    public Customer updateCustomerByFields(Long id, Map<String,Object> fields) {
+        Optional<Customer> existingCustomer = repository.findById(id);
+        if(existingCustomer.isPresent()){
+            fields.forEach((key,value)->{
+                Field field = org.springframework.util.ReflectionUtils.findField(Customer.class,key);
+                field.setAccessible(true);
+                org.springframework.data.util.ReflectionUtils.setField(
+                        field,existingCustomer.get(),value);
+            });
+            return repository.save(existingCustomer.get());
+        }
+        return  null;
+    }
 }
